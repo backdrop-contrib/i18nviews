@@ -23,9 +23,37 @@ function i18nviews_views_handlers() {
     'handlers' => array(
       'content_negotiation_filter_handler' => array(
         'parent' => 'views_handler_filter',
+        'file' => 'includes/content_negotiation_filter_handler.inc'
+      ),
+      'i18nviews_handler_field_taxonomy' => array(
+         'parent' => 'views_handler_field_taxonomy',
+      ),
+      'i18nviews_handler_field_term_description' => array(
+         'parent' => 'views_handler_field_markup',
+      ),
+      'i18nviews_handler_field_term_node_tid' => array(
+         'parent' => 'views_handler_field_term_node_tid',
+      ),
+      'i18nviews_handler_argument_term_node_tid' => array(
+         'parent' => 'views_handler_argument_term_node_tid',
+      ),
+      'i18nviews_handler_filter_term_node_tid' => array(
+         'parent' => 'views_handler_filter_term_node_tid',
       ),
     ),
   );
+}
+
+
+/**
+ * Implemenation of hook_views_data_alter().
+ */
+function i18nviews_views_data_alter(&$data) {
+  $data['term_data']['name']['field']['handler'] = 'i18nviews_handler_field_taxonomy';
+  $data['term_data']['description']['field']['handler'] = 'i18nviews_handler_field_term_description';
+  $data['term_node']['tid']['field']['handler'] = 'i18nviews_handler_field_term_node_tid';
+  $data['term_node']['tid']['argument']['handler'] = 'i18nviews_handler_argument_term_node_tid';
+  $data['term_node']['tid']['filter']['handler'] = 'i18nviews_handler_filter_term_node_tid';
 }
 
 /**

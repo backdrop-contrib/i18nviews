@@ -7,7 +7,7 @@ function i18nviews_views_data() {
     'title' => t('Content negotiation'),
     'help' => t('Removes the nodes that are not valid according to the content selection mode.'),
     'filter' => array(
-      'handler' => 'content_negotiation_filter_handler',
+      'handler' => 'i18nviews_content_negotiation_filter_handler',
     ),
   );
   return $data;
@@ -22,9 +22,9 @@ function i18nviews_views_handlers() {
       'path' => drupal_get_path('module', 'i18nviews') . '/includes',
     ),
     'handlers' => array(
-      'content_negotiation_filter_handler' => array(
+      'i18nviews_content_negotiation_filter_handler' => array(
         'parent' => 'views_handler_filter',
-        'file' => 'includes/content_negotiation_filter_handler.inc'
+        'file' => 'includes/i18nviews_content_negotiation_filter_handler.inc'
       ),
       'i18nviews_handler_field_taxonomy' => array(
          'parent' => 'views_handler_field_taxonomy',

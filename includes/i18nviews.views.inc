@@ -1,4 +1,5 @@
 <?php
+// $Id$
 
 function i18nviews_views_data() {
   $data['node']['content_negotiation'] = array(
@@ -69,6 +70,15 @@ function i18nviews_views_plugins() {
         'help' => t("Use the locale system as implemented by the Views translation module."),
         'handler' => 'views_plugin_localization_i18nstrings',
         'path' => $path,
+      ),
+    ),
+    'argument validator' => array(
+      'i18n_taxonomy_term' => array(
+        'title' => t('Taxonomy term (i18n)'),
+        'help' => t("Use the locale to interpret arguments."),
+        'handler' => 'i18nviews_plugin_argument_validate_i18n_taxonomy_term',
+        'path' => $path,
+        'parent' => 'taxonomy_term',
       ),
     ),
   );

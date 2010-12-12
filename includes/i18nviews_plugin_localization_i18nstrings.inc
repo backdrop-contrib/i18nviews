@@ -10,7 +10,7 @@
  *
  * @ingroup views_localization_plugins
  */
-class views_plugin_localization_i18nstrings extends views_plugin_localization {
+class i18nviews_plugin_localization_i18nstrings extends views_plugin_localization {
 
   /**
    * Translate a string.

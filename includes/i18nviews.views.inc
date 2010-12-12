@@ -68,7 +68,7 @@ function i18nviews_views_plugins() {
       'i18nstrings' => array(
         'title' => t('Views translation module'),
         'help' => t("Use the locale system as implemented by the Views translation module."),
-        'handler' => 'views_plugin_localization_i18nstrings',
+        'handler' => 'i18nviews_plugin_localization_i18nstrings',
         'path' => $path,
       ),
     ),

@@ -22,10 +22,7 @@ function i18nviews_views_handlers() {
       'path' => drupal_get_path('module', 'i18nviews') . '/includes',
     ),
     'handlers' => array(
-      'i18nviews_content_negotiation_filter_handler' => array(
-        'parent' => 'views_handler_filter',
-        'file' => 'includes/i18nviews_content_negotiation_filter_handler.inc'
-      ),
+      // field handlers.
       'i18nviews_handler_field_taxonomy' => array(
          'parent' => 'views_handler_field_taxonomy',
       ),
@@ -35,11 +32,26 @@ function i18nviews_views_handlers() {
       'i18nviews_handler_field_term_node_tid' => array(
          'parent' => 'views_handler_field_term_node_tid',
       ),
+      'i18nviews_handler_field_term_language' => array(
+        'parent' => 'views_handler_field_taxonomy',
+      ),
+      // argument handlers.
       'i18nviews_handler_argument_term_node_tid' => array(
          'parent' => 'views_handler_argument_term_node_tid',
       ),
+      'i18nviews_handler_argument_term_language' => array(
+        'parent' => 'views_handler_argument',
+      ),
+      // filter handlers.
+      'i18nviews_content_negotiation_filter_handler' => array(
+        'parent' => 'views_handler_filter',
+        'file' => 'includes/i18nviews_content_negotiation_filter_handler.inc'
+      ),
       'i18nviews_handler_filter_term_node_tid' => array(
          'parent' => 'views_handler_filter_term_node_tid',
+      ),
+      'i18nviews_handler_filter_term_language' => array(
+        'parent' => 'views_handler_filter_in_operator',
       ),
     ),
   );
@@ -50,11 +62,29 @@ function i18nviews_views_handlers() {
  * Implemenation of hook_views_data_alter().
  */
 function i18nviews_views_data_alter(&$data) {
+  // Replace term_data handlers.
   $data['term_data']['name']['field']['handler'] = 'i18nviews_handler_field_taxonomy';
   $data['term_data']['description']['field']['handler'] = 'i18nviews_handler_field_term_description';
   $data['term_node']['tid']['field']['handler'] = 'i18nviews_handler_field_term_node_tid';
   $data['term_node']['tid']['argument']['handler'] = 'i18nviews_handler_argument_term_node_tid';
   $data['term_node']['tid']['filter']['handler'] = 'i18nviews_handler_filter_term_node_tid';
+
+  // Add i18n language field to term_data.
+  $data['term_data']['language'] = array(
+    'group' => t('Term translation'),
+    'title' => t('Language'),
+    'help' => t('The language the term is in.'),
+    'field' => array(
+      'handler' => 'i18nviews_handler_field_term_language',
+      'click sortable' => TRUE,
+    ),
+    'filter' => array(
+      'handler' => 'i18nviews_handler_filter_term_language',
+    ),
+    'argument' => array(
+      'handler' => 'i18nviews_handler_argument_term_language',
+    ),
+  );
 }
 
 /**

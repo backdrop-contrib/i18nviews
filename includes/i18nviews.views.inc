@@ -45,7 +45,6 @@ function i18nviews_views_handlers() {
       // filter handlers.
       'i18nviews_content_negotiation_filter_handler' => array(
         'parent' => 'views_handler_filter',
-        'file' => 'includes/i18nviews_content_negotiation_filter_handler.inc'
       ),
       'i18nviews_handler_filter_term_node_tid' => array(
          'parent' => 'views_handler_filter_term_node_tid',

@@ -42,6 +42,9 @@ function i18nviews_views_handlers() {
       'i18nviews_handler_argument_term_language' => array(
         'parent' => 'views_handler_argument',
       ),
+      'i18nviews_handler_argument_term_node_tid_depth' => array(
+        'parent' => 'views_handler_argument_term_node_tid_depth',
+      ),
       // filter handlers.
       'i18nviews_content_negotiation_filter_handler' => array(
         'parent' => 'views_handler_filter',
@@ -67,6 +70,7 @@ function i18nviews_views_data_alter(&$data) {
   $data['term_node']['tid']['field']['handler'] = 'i18nviews_handler_field_term_node_tid';
   $data['term_node']['tid']['argument']['handler'] = 'i18nviews_handler_argument_term_node_tid';
   $data['term_node']['tid']['filter']['handler'] = 'i18nviews_handler_filter_term_node_tid';
+  $data['node']['term_node_tid_depth']['argument']['handler'] = 'i18nviews_handler_argument_term_node_tid_depth';
 
   // Add i18n language field to term_data.
   $data['term_data']['language'] = array(

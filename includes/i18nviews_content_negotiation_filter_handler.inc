@@ -1,5 +1,4 @@
 <?php
-// $Id$
 
 class i18nviews_content_negotiation_filter_handler extends views_handler_filter {
   function query() {

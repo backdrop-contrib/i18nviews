@@ -1,5 +1,4 @@
 <?php
-// $Id$
 /**
  * @file
  * Contains the 'Taxonomy term (i18n)' argument validator plugin.

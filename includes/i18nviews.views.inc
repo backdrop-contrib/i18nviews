@@ -1,5 +1,4 @@
 <?php
-// $Id$
 
 function i18nviews_views_data() {
   $data['node']['content_negotiation'] = array(

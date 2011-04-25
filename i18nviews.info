@@ -4,4 +4,4 @@ dependencies[] = views
 dependencies[] = i18nstrings
 dependencies[] = i18ntaxonomy
 package = Multilanguage
-core = 6.x
+core = 7.x

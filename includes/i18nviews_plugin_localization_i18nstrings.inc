@@ -5,7 +5,7 @@
  */
 
 /**
- * Localization plugin to pass translatable strings through i18nstrings().
+ * Localization plugin to pass translatable strings through i18n_string().
  *
  * @ingroup views_localization_plugins
  */
@@ -21,7 +21,7 @@ class i18nviews_plugin_localization_i18nstrings extends views_plugin_localizatio
    *   view name, display_id, and a property, e.g., 'header'.
    */
   function translate_string($string, $keys = array()) {
-    return i18nstrings($this->stringid($keys), $string);
+    return i18n_string($this->stringid($keys), $string);
   }
 
   /**

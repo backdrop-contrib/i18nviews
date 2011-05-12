@@ -1,5 +1,8 @@
 <?php
 
+/**
+ * Implementation of hook_views_data().
+ */
 function i18nviews_views_data() {
   $data['node']['content_negotiation'] = array(
     'group' => t('Node translation'),
@@ -13,7 +16,7 @@ function i18nviews_views_data() {
 }
 
 /**
- * Implemenation of hook_views_data_alter().
+ * Implementation of hook_views_data_alter().
  */
 function i18nviews_views_data_alter(&$data) {
   // Replace term_data handlers.
@@ -42,12 +45,13 @@ function i18nviews_views_data_alter(&$data) {
   );
 }
 
+
 /**
  * Implementation of hook_views_plugins().
  */
 function i18nviews_views_plugins() {
   $path = drupal_get_path('module', 'i18nviews') . '/includes';
-  return array(
+  $ret = array(
     'module' => 'i18nviews',
     'localization' => array(
       'i18nstrings' => array(
@@ -67,4 +71,5 @@ function i18nviews_views_plugins() {
       ),
     ),
   );
+  return $ret;
 }

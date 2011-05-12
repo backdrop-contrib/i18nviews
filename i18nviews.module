@@ -87,9 +87,7 @@ function i18nviews_views_handler_field_allterms($fieldinfo, $fielddata, $value, 
  */
 function i18nviews_views_api() {
   return array(
-    // Changing this to 3.0 leads to broken i18nviews. hook_views_plugins and
-    // hook_views_data don't get called. We need to figure out what's wrong.
-    'api' => '2.0',
+    'api' => '3.0-alpha1',
     'path' => drupal_get_path('module', 'i18nviews') . '/includes',
   );
 }

@@ -127,7 +127,7 @@ function i18nviews_views_ui_edit_display_submit($form, &$form_state) {
       $name = $form_state['view']->name;
       $group = $form_state['display_id'];
       $format = isset($form_state['values'][$field . '_format']) ? $form_state['values'][$field . '_format'] : NULL;
-      i18nstrings_update("views:$name:$group:$field", $form_state['values'][$field], $format);
+      i18n_string_update("views:$name:$group:$field", $form_state['values'][$field], array('format' => $format));
     }
   }
 }

@@ -44,7 +44,7 @@ class i18nviews_plugin_localization_i18nstrings extends views_plugin_localizatio
    *   Full data for the string to be translated.
    */
   function delete($source) {
-    i18nstrings_remove($this->stringid($source['keys']), $source['value']);
+    i18n_string_remove($this->stringid($source['keys']), $source['value']);
     return TRUE;
   }
   

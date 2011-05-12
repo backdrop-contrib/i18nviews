@@ -1,14 +1,21 @@
 name = Views translation
 description = Translation of views strings and content selection for views. Requires Views 3.x
 dependencies[] = views
-dependencies[] = i18n_strings
+dependencies[] = i18n_string
 dependencies[] = i18n_taxonomy
 package = Multilanguage
 core = 7.x
 
-; Handlers
-files[] = handlers/
-; Includes
-; Modules
-; Plugins
-; Tests
+; Handlers, Plugins
+files[] = i18nviews_handler_argument_term_language.inc
+files[] = i18nviews_handler_argument_term_node_tid_depth.inc
+files[] = i18nviews_handler_argument_term_node_tid.inc
+files[] = i18nviews_handler_field_taxonomy.inc
+files[] = i18nviews_handler_field_term_description.inc
+files[] = i18nviews_handler_field_term_language.inc
+files[] = i18nviews_handler_field_term_node_tid.inc
+files[] = i18nviews_handler_filter_content_negotiation.inc
+files[] = i18nviews_handler_filter_term_language.inc
+files[] = i18nviews_handler_filter_term_node_tid.inc
+files[] = i18nviews_plugin_argument_validate_i18n_taxonomy_term.inc
+files[] = i18nviews_plugin_localization_i18nstrings.inc

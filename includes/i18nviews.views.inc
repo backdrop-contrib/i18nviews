@@ -6,58 +6,11 @@ function i18nviews_views_data() {
     'title' => t('Content negotiation'),
     'help' => t('Removes the nodes that are not valid according to the content selection mode.'),
     'filter' => array(
-      'handler' => 'i18nviews_content_negotiation_filter_handler',
+      'handler' => 'i18nviews_filter_handler_content_negotiation',
     ),
   );
   return $data;
 }
-
-/**
- * Implementation of hook_views_handlers
- */
-function i18nviews_views_handlers() {
-  return array(
-    'info' => array(
-      'path' => drupal_get_path('module', 'i18nviews') . '/includes',
-    ),
-    'handlers' => array(
-      // field handlers.
-      'i18nviews_handler_field_taxonomy' => array(
-         'parent' => 'views_handler_field_taxonomy',
-      ),
-      'i18nviews_handler_field_term_description' => array(
-         'parent' => 'views_handler_field_markup',
-      ),
-      'i18nviews_handler_field_term_node_tid' => array(
-         'parent' => 'views_handler_field_term_node_tid',
-      ),
-      'i18nviews_handler_field_term_language' => array(
-        'parent' => 'views_handler_field_taxonomy',
-      ),
-      // argument handlers.
-      'i18nviews_handler_argument_term_node_tid' => array(
-         'parent' => 'views_handler_argument_term_node_tid',
-      ),
-      'i18nviews_handler_argument_term_language' => array(
-        'parent' => 'views_handler_argument',
-      ),
-      'i18nviews_handler_argument_term_node_tid_depth' => array(
-        'parent' => 'views_handler_argument_term_node_tid_depth',
-      ),
-      // filter handlers.
-      'i18nviews_content_negotiation_filter_handler' => array(
-        'parent' => 'views_handler_filter',
-      ),
-      'i18nviews_handler_filter_term_node_tid' => array(
-         'parent' => 'views_handler_filter_term_node_tid',
-      ),
-      'i18nviews_handler_filter_term_language' => array(
-        'parent' => 'views_handler_filter_in_operator',
-      ),
-    ),
-  );
-}
-
 
 /**
  * Implemenation of hook_views_data_alter().

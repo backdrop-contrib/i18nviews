@@ -1,6 +1,6 @@
 <?php
 
-class i18nviews_content_negotiation_filter_handler extends views_handler_filter {
+class i18nviews_filter_handler_content_negotiation extends views_handler_filter {
   function query() {
     $this->ensure_my_table();
     $where = i18n_db_rewrite_where($this->table_alias, 'node');

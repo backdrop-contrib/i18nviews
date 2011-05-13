@@ -10,7 +10,7 @@ class i18nviews_handler_argument_term_node_tid_depth extends views_handler_argum
     $term = taxonomy_term_load($this->argument);
     if (!empty($term)) {
       // TODO check if translation is enabled for this vocab.
-      return check_plain(tt('taxonomy:term:'. $term->tid .':name', $term->name));
+      return check_plain(i18n_string('taxonomy:term:'. $term->tid .':name', $term->name));
     }
     // TODO review text
     return t('No name');

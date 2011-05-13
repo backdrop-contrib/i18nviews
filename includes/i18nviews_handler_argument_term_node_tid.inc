@@ -12,7 +12,7 @@ class i18nviews_handler_argument_term_node_tid extends views_handler_argument_te
       ->condition('td.tid', $this->value)
       ->execute();
     foreach ($result as $term) {
-      $titles[] = check_plain(tt('taxonomy:term:'. $term->tid .':name', $term->name));
+      $titles[] = check_plain(i18n_string('taxonomy:term:'. $term->tid .':name', $term->name));
     }
     return $titles;
   }

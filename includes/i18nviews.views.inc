@@ -1,9 +1,9 @@
 <?php
 
 /**
- * Implementation of hook_views_data_alter().
+ * Implementation of hook_views_data().
  */
-function i18nviews_views_data_alter(&$data) {
+function i18nviews_views_data() {
   $data['node']['content_negotiation'] = array(
     'group' => t('Node translation'),
     'title' => t('Content negotiation'),
@@ -12,7 +12,13 @@ function i18nviews_views_data_alter(&$data) {
       'handler' => 'i18nviews_filter_handler_content_negotiation',
     ),
   );
+  return $data;
+}
 
+/**
+ * Implementation of hook_views_data_alter().
+ */
+function i18nviews_views_data_alter(&$data) {
   // Replace term_data handlers.
   $data['term_data']['name']['field']['handler'] = 'i18nviews_handler_field_taxonomy';
   $data['term_data']['description']['field']['handler'] = 'i18nviews_handler_field_term_description';

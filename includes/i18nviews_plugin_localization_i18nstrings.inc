@@ -30,7 +30,7 @@ class i18nviews_plugin_localization_i18nstrings extends views_plugin_localizatio
    * @param $source
    *   Full data for the string to be translated.
    */
-  function save($source) {
+  function save_string($source) {
     // @TODO identify format for special elements
     //  header, footer, empty are currently untranslateable
     i18n_string_update($this->stringid($source['keys']), $source['value']);

@@ -180,10 +180,9 @@ function i18nviews_views_data_alter(&$data) {
 /**
  * Implementation of hook_field_views_data().
  *
- * modules/field.views.inc field_views_data()
+ * modules/taxonomy.views.inc taxonomy_field_views_data()
  */
 function i18nviews_field_views_data(&$result, &$field, $module) {
-  // modules/taxonomy.views.inc taxonomy_field_views_data()
   // provide translated variant
   if ($module=='taxonomy') {
     // TODO CHECK

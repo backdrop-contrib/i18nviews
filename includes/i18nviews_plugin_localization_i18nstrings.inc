@@ -27,13 +27,17 @@ class i18nviews_plugin_localization_i18nstrings extends views_plugin_localizatio
   /**
    * Save a string for translation.
    *
-   * @param $source
-   *   Full data for the string to be translated.
+   * @param $string
+   *   The string to be translated.
+   *
+   * @param $keys
+   *   An array of keys to identify the string. Generally constructed from
+   *   view name, display_id, and a property, e.g., 'header'.
    */
-  function save_string($source) {
+  function save_string($string, $keys = array()) {
     // @TODO identify format for special elements
     //  header, footer, empty are currently untranslateable
-    i18n_string_update($this->stringid($source['keys']), $source['value']);
+    i18n_string_update($this->stringid($string), $keys);
     return TRUE;
   }
 

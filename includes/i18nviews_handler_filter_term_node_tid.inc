@@ -150,9 +150,7 @@ class i18nviews_handler_filter_term_node_tid extends views_handler_filter_term_n
     $query->addTag('term_access');
     $result = $query->execute();
     foreach ($result as $term) {
-      // @todo
-      //         unset($missing[strtolower(tt('taxonomy:term:'. $term->tid .':name', $term->name))]);
-      unset($missing[strtolower($term->name)]);
+      unset($missing[strtolower(i18n_taxonomy_term_name($term->name))]);
       $tids[] = $term->tid;
     }
 
@@ -178,9 +176,7 @@ class i18nviews_handler_filter_term_node_tid extends views_handler_filter_term_n
         ->condition('td.tid', $this->value)
         ->execute();
       foreach ($result as $term) {
-        // @todo
-        // $this->value_options[$term->tid] = tt('taxonomy:term:'. $term->tid .':name', $term->name);
-        $this->value_options[$term->tid] = $term->name;
+        $this->value_options[$term->tid] = i18n_taxonomy_term_name($term);
       }
     }
     return parent::admin_summary();

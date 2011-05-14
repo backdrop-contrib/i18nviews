@@ -188,7 +188,6 @@ function i18nviews_translate_tab_page($view, $language = NULL) {
         '#default_value' => $translatable['value'],
       );
     }
-//     dsm($translatables);
   }
   return i18n_string_translate_page($form_meta, $language);
 }

@@ -40,8 +40,10 @@ function i18nviews_views_data_alter(&$data) {
     'help' => t('The translated taxonomy term name.'),
     'field' => array(
       //'handler' => 'views_handler_field_taxonomy',
-      'handler' => 'i18nviews_handler_field_taxonomy_term_name',
+      'handler' => 'i18nviews_handler_field_taxonomy',
       'click sortable' => TRUE,
+      // name_i18n is not a real field in the database but we could actually let's just add the name, that's we need too.
+      'real field' => 'name',
     ),
     // TODO currently almost impossible, JOIN to i18n_string table needed
     /*
@@ -81,7 +83,7 @@ function i18nviews_views_data_alter(&$data) {
     'title' => t('Language'),
     'help' => t('The language the term is in.'),
     'field' => array(
-      'handler' => 'i18nviews_handler_field_taxonomy_term_language',
+      'handler' => 'i18nviews_handler_field_term_language',
       'click sortable' => TRUE,
     ),
     'filter' => array(
@@ -100,7 +102,7 @@ function i18nviews_views_data_alter(&$data) {
       'title' => t('All taxonomy terms (translated)'),
       'help' => t('Display all taxonomy terms associated with a node from specified vocabularies.'),
       //'handler' => 'views_handler_field_term_node_tid',
-      'handler' => 'i18nviews_handler_field_taxonomy_term_node_tid',
+      'handler' => 'i18nviews_handler_field_term_node_tid',
       'no group by' => TRUE,
     ),
   );

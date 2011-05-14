@@ -108,8 +108,8 @@ function _i18nviews_display_fields() {
  * Add a submit handler to the submit button on views_ui_edit_display_form.
  * TODO CHECK
  */
-function i18nviews_form_views_ui_edit_display_form_alter(&$form, $form_state) {
-  $form['buttons']['submit']['#submit'][] = 'i18nviews_views_ui_edit_display_submit';
+function i18nviews_form_views_ui_edit_form_alter(&$form, $form_state) {
+  $form['buttons']['submit']['#submit'][] = 'i18nviews_views_ui_edit_form_submit';
 }
 
 /**
@@ -118,7 +118,7 @@ function i18nviews_form_views_ui_edit_display_form_alter(&$form, $form_state) {
  * Creates or updates translation source records for specified Views fields.
  * TODO CHECK
  */
-function i18nviews_views_ui_edit_display_submit($form, &$form_state) {
+function i18nviews_views_ui_edit_form_submit($form, &$form_state) {
   $fields = _i18nviews_display_fields();
   foreach ($fields as $field) {
     if (isset($form_state['values'][$field])) {

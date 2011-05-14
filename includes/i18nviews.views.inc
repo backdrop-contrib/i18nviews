@@ -73,6 +73,7 @@ function i18nviews_views_data_alter(&$data) {
       //'handler' => 'views_handler_field_markup',
       'handler' => 'i18nviews_handler_field_taxonomy_term_description',
       'format' => array('field' => 'format'),
+      'real field' => 'description',
     ),
   );
 

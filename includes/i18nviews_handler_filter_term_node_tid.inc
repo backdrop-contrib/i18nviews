@@ -20,12 +20,11 @@ class i18nviews_handler_filter_term_node_tid extends views_handler_filter_term_n
       $default = '';
       if ($this->value) {
         $terms = taxonomy_term_load_multiple($this->value);
-        i18n_taxonomy_translate_terms($terms);
         foreach ($terms as $term) {
           if ($default) {
             $default .= ', ';
           }
-          $default .= check_plain($term->name);
+          $default .= check_plain(i18n_taxonomy_term_name($term));
         }
       }
 
@@ -41,20 +40,19 @@ class i18nviews_handler_filter_term_node_tid extends views_handler_filter_term_n
     }
     else {
       if (!empty($this->options['hierarchy']) && $this->options['limit']) {
+        global $language;
         $tree = taxonomy_get_tree($vocabulary->vid);
-        i18n_taxonomy_translate_terms($tree);
         $options = array();
 
         if ($tree) {
           foreach ($tree as $term) {
             $choice = new stdClass();
-            $choice->option = array($term->tid => str_repeat('-', $term->depth) . check_plain($term->name));
+            $choice->option = array($term->tid => str_repeat('-', $term->depth) . check_plain(i18n_taxonomy_term_name($term)));
             $options[] = $choice;
           }
         }
       }
       else {
-        $options = array();
         $options = array();
         $query = db_select('taxonomy_term_data', 'td');
         $query->innerJoin('taxonomy_vocabulary', 'tv', 'td.vid = tv.vid');
@@ -69,10 +67,8 @@ class i18nviews_handler_filter_term_node_tid extends views_handler_filter_term_n
         }
         $result = $query->execute();
         foreach ($result as $term) {
-          $options[$term->tid] = $term->name;
+          $options[$term->tid] = i18n_taxonomy_term_name($term);
         }
-        // @todo: Especially check this part.
-        i18n_taxonomy_translate_terms($options);
       }
 
       $default_value = (array) $this->value;

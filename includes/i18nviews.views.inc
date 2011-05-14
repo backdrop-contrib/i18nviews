@@ -4,15 +4,6 @@
  * Implementation of hook_views_data_alter().
  */
 function i18nviews_views_data_alter(&$data) {
-  // Add the content_negotiation filter.
-  $data['node']['content_negotiation'] = array(
-    'group' => t('Node translation'),
-    'title' => t('Content negotiation'),
-    'help' => t('Removes the nodes that are not valid according to the content selection mode.'),
-    'filter' => array(
-      'handler' => 'i18nviews_filter_handler_content_negotiation',
-    ),
-  );
   // Replace taxonomy_term_data handlers.
 
   // TAXONOMY TERM

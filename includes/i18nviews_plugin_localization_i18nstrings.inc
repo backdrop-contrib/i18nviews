@@ -19,26 +19,34 @@ class i18nviews_plugin_localization_i18nstrings extends views_plugin_localizatio
    * @param $keys
    *   An array of keys to identify the string. Generally constructed from
    *   view name, display_id, and a property, e.g., 'header'.
+   * @param $format
+   *   The input format of the string. This is optional.
    */
-  function translate_string($string, $keys = array()) {
-    return i18n_string($this->stringid($keys), $string);
+  function translate_string($string, $keys = array(), $format = '') {
+    $options = array();
+    if (!empty($format)) {
+      $options['format'] = $format;
+    }
+    return i18n_string($this->stringid($keys), $string, $options);
   }
 
   /**
-   * Save a string for translation.
+   * Save a string for translation
    *
    * @param $string
    *   The string to be translated.
-   *
    * @param $keys
    *   An array of keys to identify the string. Generally constructed from
    *   view name, display_id, and a property, e.g., 'header'.
+   * @param $format
+   *   The input format of the string. This is optional.
    */
-  function save_string($string, $keys = array()) {
-    // @TODO identify format for special elements
-    //  header, footer, empty are currently untranslateable
-    i18n_string_update($this->stringid($keys), $string);
-    return TRUE;
+  function save_string($string, $keys = array(), $format = '') {
+    $options = array();
+    if (!empty($source['format'])) {
+      $options['format'] = $format;
+    }
+    i18n_string_update($this->stringid($keys), $string, $options);
   }
 
   /**

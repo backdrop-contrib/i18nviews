@@ -37,7 +37,7 @@ class i18nviews_plugin_localization_i18nstrings extends views_plugin_localizatio
   function save_string($string, $keys = array()) {
     // @TODO identify format for special elements
     //  header, footer, empty are currently untranslateable
-    i18n_string_update($this->stringid($string), $keys);
+    i18n_string_update($this->stringid($keys), $string);
     return TRUE;
   }
 

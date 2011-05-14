@@ -213,3 +213,15 @@ function i18nviews_views_plugins() {
   );
   return $ret;
 }
+
+/**
+ * Implements hook_views_ui_display_top_links_alter().
+ *
+ * Adds a translate link.
+ */
+function i18nviews_views_ui_display_top_links_alter(&$links, $view, $display_id) {
+  $links['translate'] = array(
+    'title' => t('translate view'),
+    'href' => "admin/structure/views/view/$view->name/translate"
+  );
+}

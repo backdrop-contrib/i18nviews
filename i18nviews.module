@@ -129,3 +129,67 @@ function i18nviews_views_ui_edit_form_submit($form, &$form_state) {
     }
   }
 }
+
+/**
+ * Implements hook_menu().
+ */
+function i18nviews_menu() {
+  $items['admin/structure/views/view/%views_ui_cache/translate'] = array(
+    'title' => 'Translate',
+    'access callback' => 'i18nviews_translate_tab_access',
+    'page callback' => 'i18nviews_translate_tab_page',
+    'page arguments' => array(4),
+    'type' => MENU_CALLBACK,
+    'weight' => 10,
+  );
+  $items['admin/structure/views/view/%views_ui_cache/translate/%language'] = array(
+    'title' => 'Translate',
+    'access callback' => 'i18nviews_translate_tab_access',
+    'page callback' => 'i18nviews_translate_tab_page',
+    'page arguments' => array(4, 6),
+    'type' => MENU_CALLBACK,
+  );
+
+  return $items;
+}
+
+/**
+ * Menu access callback function.
+ *
+ * Views editors required to have both views and locale admin.
+ */
+function i18nviews_translate_tab_access() {
+  return user_access('translate interface') && user_access('administer views');
+}
+
+
+/**
+ * Build a translation page for the given view.
+ */
+function i18nviews_translate_tab_page($view, $language = NULL) {
+  module_load_include('inc', 'i18n_string', 'i18n_string.pages');
+  $form_meta = array(
+    '#page_title' => t('Translate view'),
+    '#item_title_header' => t('View'),
+    '#item_title_key' => array('views', $view->name, 'human_name'),
+    '#item_title_default' => $view->human_name,
+    '#edit' => 'admin/structure/views/view/' . $view->name . '/edit',
+    '#translate' => 'admin/structure/views/view/' . $view->name . '/translate',
+    '#items' => array(),
+  );
+  $view->init_display();
+  foreach ($view->display as $display_id => $display) {
+    $translatables = array();
+    $display->handler->unpack_translatables($translatables);
+    foreach ($translatables as $translatable) {
+      $form_meta['#items'][] = array(
+        '#title' => implode(':', $translatable['keys']),
+        '#string_key' => array_merge(array('views'), $translatable['keys']),
+        '#default_value' => $translatable['value'],
+      );
+    }
+//     dsm($translatables);
+  }
+  return i18n_string_translate_page($form_meta, $language);
+}
+

@@ -4,7 +4,7 @@
  * Field handler for terms.
  */
 class i18nviews_handler_field_term_node_tid extends views_handler_field_term_node_tid {
-  function pre_render($values) {
+  function pre_render(&$values) {
     $this->field_alias = $this->aliases['nid'];
     $nids = array();
     foreach ($values as $result) {

@@ -6,7 +6,7 @@
 class i18nviews_handler_filter_term_node_tid extends views_handler_filter_term_node_tid {
 
   function value_form(&$form, &$form_state) {
-    $vocabulary = taxonomy_vocabulary_load($this->options['vid']);
+    $vocabulary = taxonomy_vocabulary_machine_name_load($this->options['vocabulary']);
     if (empty($vocabulary) && $this->options['limit']) {
       $form['markup'] = array(
         '#prefix' => '<div class="form-item">',
@@ -19,12 +19,13 @@ class i18nviews_handler_filter_term_node_tid extends views_handler_filter_term_n
     if ($this->options['type'] == 'textfield') {
       $default = '';
       if ($this->value) {
-        $result = db_query("SELECT * FROM {term_data} td WHERE td.tid IN (" . implode(', ', $this->value) . ')');
-        while ($term = db_fetch_object($result)) {
+        $terms = taxonomy_term_load_multiple($this->value);
+        i18n_taxonomy_translate_terms($terms);
+        foreach ($terms as $term) {
           if ($default) {
             $default .= ', ';
           }
-          $default .= tt('taxonomy:term:'. $term->tid .':name', $term->name);
+          $default .= check_plain($term->name);
         }
       }
 
@@ -35,33 +36,43 @@ class i18nviews_handler_filter_term_node_tid extends views_handler_filter_term_n
       );
 
       if ($this->options['limit']) {
-        $form['value']['#autocomplete_path'] = 'taxonomy/autocomplete/' . $vocabulary->vid;
+        $form['value']['#autocomplete_path'] = 'i18n/taxonomy/autocomplete/language/' . $vocabulary->vid;
       }
     }
     else {
       if (!empty($this->options['hierarchy']) && $this->options['limit']) {
         $tree = taxonomy_get_tree($vocabulary->vid);
+        i18n_taxonomy_translate_terms($tree);
         $options = array();
 
         if ($tree) {
           foreach ($tree as $term) {
             $choice = new stdClass();
-            $choice->option = array($term->tid => str_repeat('-', $term->depth) . tt('taxonomy:term:'. $term->tid .':name', $term->name));
+            $choice->option = array($term->tid => str_repeat('-', $term->depth) . check_plain($term->name));
             $options[] = $choice;
           }
         }
       }
       else {
         $options = array();
+        $options = array();
+        $query = db_select('taxonomy_term_data', 'td');
+        $query->innerJoin('taxonomy_vocabulary', 'tv', 'td.vid = tv.vid');
+        $query->fields('td');
+        $query->orderby('tv.weight');
+        $query->orderby('tv.name');
+        $query->orderby('td.weight');
+        $query->orderby('td.name');
+        $query->addTag('term_access');
         if ($this->options['limit']) {
-          $result = db_query("SELECT * FROM {term_data} WHERE vid = %d ORDER BY weight, name", $vocabulary->vid);
+          $query->condition('tv.machine_name', $vocabulary->machine_name);
         }
-        else {
-          $result = db_query("SELECT td.* FROM {term_data} td INNER JOIN {vocabulary} v ON td.vid = v.vid ORDER BY v.weight, v.name, td.weight, td.name");
+        $result = $query->execute();
+        foreach ($result as $term) {
+          $options[$term->tid] = $term->name;
         }
-        while ($term = db_fetch_object($result)) {
-          $options[$term->tid] = tt('taxonomy:term:'. $term->tid .':name', $term->name);
-        }
+        // @todo: Especially check this part.
+        i18n_taxonomy_translate_terms($options);
       }
 
       $default_value = (array) $this->value;
@@ -128,39 +139,52 @@ class i18nviews_handler_filter_term_node_tid extends views_handler_filter_term_n
     $results = array();
     foreach ($values as $value) {
       $missing[strtolower($value)] = TRUE;
-      $args[] = $value;
-      $placeholders[] = "'%s'";
+      $names[] = $value;
     }
 
-    if (!$args) {
+    if (!$names) {
       return;
     }
 
-    // add the taxonomy vid to the argument list.
-    $args[] = $this->options['vid'];
-
-    $result = db_query("SELECT * FROM {term_data} WHERE name IN (" . implode(', ', $placeholders) . ") AND vid = %d", $args);
-    while ($term = db_fetch_object($result)) {
-      unset($missing[strtolower(tt('taxonomy:term:'. $term->tid .':name', $term->name))]);
+    $query = db_select('taxonomy_term_data', 'td');
+    $query->innerJoin('taxonomy_vocabulary', 'tv', 'td.vid = tv.vid');
+    $query->fields('td');
+    $query->condition('td.name', $names);
+    $query->condition('tv.machine_name', $this->options['vocabulary']);
+    $query->addTag('term_access');
+    $result = $query->execute();
+    foreach ($result as $term) {
+      // @todo
+      //         unset($missing[strtolower(tt('taxonomy:term:'. $term->tid .':name', $term->name))]);
+      unset($missing[strtolower($term->name)]);
       $tids[] = $term->tid;
     }
 
-    if ($missing) {
+    if ($missing && !empty($this->options['error_message'])) {
       form_error($form, format_plural(count($missing), 'Unable to find term: @terms', 'Unable to find terms: @terms', array('@terms' => implode(', ', array_keys($missing)))));
+    }
+    elseif ($missing && empty($this->options['error_message'])) {
+      $tids = array(0);
     }
 
     return $tids;
+
   }
 
+
   function admin_summary() {
-    // set up $this->value_options for the parent summary
+// set up $this->value_options for the parent summary
     $this->value_options = array();
 
     if ($this->value) {
-      $result = db_query("SELECT * FROM {term_data} td WHERE td.tid IN ("  . implode(', ', $this->value) . ")");
-
-      while ($term = db_fetch_object($result)) {
-        $this->value_options[$term->tid] = tt('taxonomy:term:'. $term->tid .':name', $term->name);
+      $result = db_select('taxonomy_term_data', 'td')
+        ->fields('td')
+        ->condition('td.tid', $this->value)
+        ->execute();
+      foreach ($result as $term) {
+        // @todo
+        // $this->value_options[$term->tid] = tt('taxonomy:term:'. $term->tid .':name', $term->name);
+        $this->value_options[$term->tid] = $term->name;
       }
     }
     return parent::admin_summary();

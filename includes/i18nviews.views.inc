@@ -39,8 +39,7 @@ function i18nviews_views_data_alter(&$data) {
     'title' => t('Name (translated)'),
     'help' => t('The translated taxonomy term name.'),
     'field' => array(
-      //'handler' => 'views_handler_field_taxonomy',
-      'handler' => 'i18nviews_handler_field_taxonomy',
+      'handler' => 'i18nviews_handler_field_taxonomy_term_name',
       'click sortable' => TRUE,
       // name_i18n is not a real field in the database but we could actually let's just add the name, that's we need too.
       'real field' => 'name',
@@ -83,7 +82,7 @@ function i18nviews_views_data_alter(&$data) {
     'title' => t('Language'),
     'help' => t('The language the term is in.'),
     'field' => array(
-      'handler' => 'i18nviews_handler_field_term_language',
+      'handler' => 'i18nviews_handler_field_taxonomy_term_language',
       'click sortable' => TRUE,
     ),
     'filter' => array(

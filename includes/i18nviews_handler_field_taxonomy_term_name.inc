@@ -4,7 +4,7 @@
  * Field handler to provide simple renderer that allows linking to a taxonomy
  * term.
  */
-class i18nviews_handler_field_taxonomy extends views_handler_field_taxonomy {
+class i18nviews_handler_field_taxonomy_term_name extends views_handler_field_taxonomy {
   function pre_render(&$values) {
     foreach ($values as $key => $value) {
       if (isset($value->{$this->field_alias})) {

@@ -4,7 +4,7 @@
  * Field handler to provide simple renderer that allows linking to a taxonomy
  * term.
  */
-class i18nviews_handler_field_term_description extends views_handler_field_markup {
+class i18nviews_handler_field_taxonomy_term_description extends views_handler_field_markup {
   function construct() {
     parent::construct();
     $this->additional_fields['tid'] = 'tid';

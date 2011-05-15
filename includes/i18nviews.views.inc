@@ -105,10 +105,9 @@ function i18nviews_views_data_alter(&$data) {
     'real field' => 'nid',
     'argument' => array(
       'title' => t('Has taxonomy term ID (with depth, translated)'),
-      //'handler' => views_handler_argument_term_node_tid_depth_modifier
+      //'handler' => views_handler_argument_term_node_tid_depth
       'handler' => 'i18nviews_handler_argument_term_node_tid_depth',
       'accept depth modifier' => TRUE,
-      // use regular (non-i18n) depth modifier term_node_tid_depth_modifier
     ),
     'filter' => array(
       'title' => t('Has taxonomy terms (with depth, translated)'),

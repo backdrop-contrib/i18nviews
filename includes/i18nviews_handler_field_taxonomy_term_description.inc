@@ -14,7 +14,7 @@ class i18nviews_handler_field_taxonomy_term_description extends views_handler_fi
     $tids = array();
     foreach ($values as $key => $value) {
       if (isset($value->{$this->field_alias})) {
-        $tids[] = $value->{$this->aliases['tid']};
+        $tids[] = $this->get_value($value, 'tid');
       }
     }
 
@@ -22,7 +22,7 @@ class i18nviews_handler_field_taxonomy_term_description extends views_handler_fi
     i18n_taxonomy_localize_terms($terms, array('description'));
     foreach ($values as $key => $value) {
       if (isset($value->{$this->field_alias})) {
-        $tid = $value->{$this->aliases['tid']};
+        $tid = $this->get_value($value, 'tid');
         // @todo get the description
         $values[$key]->{$this->field_alias} = $terms[$tid]->description;
       }

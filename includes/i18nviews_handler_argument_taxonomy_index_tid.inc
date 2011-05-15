@@ -3,7 +3,7 @@
 /**
  * Allow taxonomy term ID(s) as argument
  */
-class i18nviews_handler_argument_term_node_tid extends views_handler_argument_term_node_tid {
+class i18nviews_handler_argument_taxonomy_index_tid extends views_handler_argument_term_node_tid {
   function title_query() {
     $titles = array();
     // @todo: check vocabulary translation mode (if localization needed)

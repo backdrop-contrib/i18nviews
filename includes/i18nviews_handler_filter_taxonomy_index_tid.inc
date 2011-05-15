@@ -3,7 +3,7 @@
 /**
  * Filter by term id.
  */
-class i18nviews_handler_filter_term_node_tid extends views_handler_filter_term_node_tid {
+class i18nviews_handler_filter_taxonomy_index_tid extends views_handler_filter_term_node_tid {
 
   function value_form(&$form, &$form_state) {
     $vocabulary = taxonomy_vocabulary_machine_name_load($this->options['vocabulary']);

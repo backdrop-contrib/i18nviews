@@ -127,7 +127,7 @@ function i18nviews_views_data_alter(&$data) {
     'help' => t('Display content if it has the selected taxonomy terms.'),
     'argument' => array(
       //'handler' => 'views_handler_argument_term_node_tid',
-      'handler' => 'i18nviews_handler_argument_taxonomy_term_node_tid',
+      'handler' => 'i18nviews_handler_argument_taxonomy_index_tid',
       'name table' => 'taxonomy_term_data',
       'name field' => 'name',
       'empty field name' => t('Uncategorized'),
@@ -137,7 +137,7 @@ function i18nviews_views_data_alter(&$data) {
     'filter' => array(
       'title' => t('Has taxonomy term (translated)'),
       //'handler' => 'views_handler_filter_term_node_tid',
-      'handler' => 'i18nviews_handler_filter_taxonomy_term_node_tid',
+      'handler' => 'i18nviews_handler_filter_taxonomy_index_tid',
       'hierarchy table' => 'taxonomy_term_hierarchy',
       'numeric' => TRUE,
       'skip base' => 'taxonomy_term_data',

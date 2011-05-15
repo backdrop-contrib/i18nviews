@@ -135,3 +135,20 @@ function i18nviews_menu() {
 function i18nviews_translate_tab_access() {
   return user_access('translate interface') && user_access('administer views');
 }
+
+/**
+ * Find the location source for a certain expression.
+ */
+function i18nviews_locale_source($translation, $textgroup, $language = NULL) {
+  if (!isset($language)) {
+    $language = $GLOBALS['language']->language;
+  }
+  $select = db_select('locales_source', 'ls');
+  $select->innerJoin('locales_target', 'lt', '(ls.lid = lt.lid AND lt.translation = :translation AND lt.language = :language AND ls.textgroup = :textgroup )', array(
+      ':translation' => $translation,
+      ':language' => $language,
+      ':textgroup' => $textgroup,
+  ));
+  $select->fields('ls', array('source'));
+  return $select->execute()->fetchObject();
+}

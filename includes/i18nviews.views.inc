@@ -46,6 +46,7 @@ function i18nviews_views_data_alter(&$data) {
       //'handler => 'views_handler_filter_string',
       'handler' => 'i18nviews_handler_filter_taxonomy_term_name',
       'help' => t('Translated taxonomy term name.'),
+      'real field' => 'name',
     ),
     'argument' => array(
       //'handler => 'views_handler_argument_string',

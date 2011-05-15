@@ -45,20 +45,7 @@ class i18nviews_plugin_argument_validate_i18n_taxonomy_term extends views_plugin
     $form['type']['#description'] = t('Select the form of this argument; if using term name, it is generally more efficient to convert it to a term ID and use Taxonomy: Term ID rather than Taxonomy: Term Name" as an argument.');
   }
 
-  function source_term($name, $language) {
-    $select = db_select('locales_source', 'ls');
-    $select->innerJoin('locales_target', 'lt', '(ls.lid = lt.lid AND lt.translation = :translation AND lt.language = :language AND ls.textgroup = :textgroup )', array(
-        ':translation' => $name,
-        ':language' => $language,
-        ':textgroup' => 'taxonomy'
-    ));
-    $select->fields('ls', array('source'));
-    return $select->execute()->fetchObject();
-  }
-
   function validate_argument($argument) {
-    global $language;
-    $langcode =$language->language;
     $vocabularies = $this->options['vocabularies'];
     $type = $this->options['type'];
     $transform = $this->options['transform'];
@@ -66,7 +53,7 @@ class i18nviews_plugin_argument_validate_i18n_taxonomy_term extends views_plugin
       case 'i18n_name':
       case 'i18n_convert':
         // Check to see if the term is in fact localised
-        $localised = $this->source_term($argument, $langcode);
+        $localised = i18nviews_locale_source($argument, 'taxonomy');
         if (!empty($localised)) {
           // If it is localised I set the $argument to the orginal and tell the view that the argument has been localized and to use the source
           $argument = $localised->source;

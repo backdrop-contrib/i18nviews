@@ -115,15 +115,6 @@ function i18nviews_views_data_alter(&$data) {
     ),
   );
 
-  $data['node']['term_node_tid_depth_modifier_i18n'] = array(
-    'title' => t('Has taxonomy term ID depth modifier (translated)'),
-    'help' => t('Allows the "depth" for Taxonomy: Term ID (with depth) to be modified via an additional contextual filter value.'),
-    'argument' => array(
-      //'handler' => 'views_handler_argument_term_node_tid_depth_modifier',
-      'handler' => 'i18nviews_handler_argument_term_node_tid_depth_modifier',
-    ),
-  );
-
   // NODE INDEX
   // @todo This stuff needs to move to a node field since
   // really it's all about nodes.

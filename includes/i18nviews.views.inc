@@ -54,6 +54,7 @@ function i18nviews_views_data_alter(&$data) {
       'help' => t('Translated taxonomy term name.'),
       'many to one' => TRUE,
       'empty field name' => t('Uncategorized'),
+      'real field' => 'name',
     ),
   );
 

@@ -3,7 +3,7 @@ description = Translation of views strings and content selection for views. Requ
 dependencies[] = views
 dependencies[] = i18n_string
 dependencies[] = i18n_taxonomy
-package = Multilanguage
+package = Multilingual - Internationalization
 core = 7.x
 
 ; Handlers, Plugins

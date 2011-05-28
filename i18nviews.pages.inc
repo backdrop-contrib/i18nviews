@@ -8,7 +8,7 @@ function i18nviews_translate_tab_page($view, $language = NULL) {
   $form_meta = array(
     '#page_title' => t('Translate view'),
     '#item_title_header' => t('View'),
-    '#item_title_key' => array('views', $view->name, 'human_name'),
+    '#item_title_key' => array('views', $view->name, 'default', 'title'),
     '#item_title_default' => $view->human_name,
     '#edit' => 'admin/structure/views/view/' . $view->name . '/edit',
     '#translate' => 'admin/structure/views/view/' . $view->name . '/translate',
@@ -20,8 +20,8 @@ function i18nviews_translate_tab_page($view, $language = NULL) {
     $display->handler->unpack_translatables($translatables);
     foreach ($translatables as $translatable) {
       $form_meta['#items'][] = array(
-        '#title' => implode(':', $translatable['keys']),
-        '#string_key' => array_merge(array('views'), $translatable['keys']),
+        '#title' => $display_id . ' ' . implode(':', $translatable['keys']),
+        '#string_key' => array_merge(array('views', $view->name, $display_id), $translatable['keys']),
         '#default_value' => $translatable['value'],
       );
     }

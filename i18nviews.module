@@ -111,7 +111,7 @@ function i18nviews_menu() {
     'access callback' => 'i18nviews_translate_tab_access',
     'page callback' => 'i18nviews_translate_tab_page',
     'page arguments' => array(4),
-    'type' => MENU_CALLBACK,
+    'type' => MENU_VISIBLE_IN_BREADCRUMB,
     'weight' => 10,
     'file' => 'i18nviews.pages.inc',
   );
@@ -120,7 +120,7 @@ function i18nviews_menu() {
     'access callback' => 'i18nviews_translate_tab_access',
     'page callback' => 'i18nviews_translate_tab_page',
     'page arguments' => array(4, 6),
-    'type' => MENU_CALLBACK,
+    'type' => MENU_VISIBLE_IN_BREADCRUMB,
     'file' => 'i18nviews.pages.inc',
   );
 

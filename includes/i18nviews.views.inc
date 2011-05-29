@@ -124,6 +124,7 @@ function i18nviews_views_data_alter(&$data) {
     'group' => t('Content'),
     'title' => t('Has taxonomy term ID (translated)'),
     'help' => t('Display content if it has the selected taxonomy terms.'),
+    'real field' => 'tid',
     'argument' => array(
       //'handler' => 'views_handler_argument_term_node_tid',
       'handler' => 'i18nviews_handler_argument_taxonomy_index_tid',

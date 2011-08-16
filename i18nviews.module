@@ -22,33 +22,49 @@ function i18nviews_help($path, $arg) {
   }
 }
 
+
 /**
- * Implementation of hook_locale().
+ * Returns true if i18nstrings is used as views localization plugin.
  */
-function i18nviews_locale($op = 'groups') {
-  switch ($op) {
-    case 'groups':
-      return array('views' => t('Views'));
-    case 'info':
-      // Only when i18nstrings is used as views localization plugin
-      if (variable_get('views_localization_plugin', 'core') == 'i18nstrings') {
-        $info['views']['refresh callback'] = 'i18nviews_locale_refresh';
-        $info['views']['format'] = TRUE;
-        return $info;
-      }
-      break;
+function i18nviews_localization_plugin_enabled() {
+  return variable_get('views_localization_plugin', 'core') == 'i18nstrings';
+}
+
+/**
+ * Implements hook_i18n_string_list().
+ */
+function i18nviews_i18n_string_list($group) {
+  $strings = array();
+  if ($group == 'views') {
+    $views = views_get_all_views();
+    foreach ($views as $view) {
+      $strings[$view->name] = i18nviews_views_properties($view);
+    }
+    return array($group => $strings);
   }
 }
 
 /**
- * Refresh views locales, 3.x version
+ * Get all translatable properties from a view.
+ *
+ * @param $view
+ *  An view object.
  */
-function i18nviews_locale_refresh() {
-  $views = views_get_all_views();
-  foreach ($views as $view) {
-    $view->save_locale_strings();
+function i18nviews_views_properties($view) {
+  $properties = array();
+  $view->init_display();
+  foreach ($view->display as $display_id => $display) {
+    $translatables = array();
+    $display->handler->unpack_translatables($translatables);
+    foreach ($translatables as $translatable) {
+      $key = implode(':', $translatable['keys']);
+      $properties[$display_id][$key] = array(
+        'title' => $display_id . ' ' . $key,
+        'string' => $translatable['value'],
+      );
+    }
   }
-  return TRUE; // Completed successfully
+  return $properties;
 }
 
 /**
@@ -87,19 +103,9 @@ function i18nviews_views_handler_field_allterms($fieldinfo, $fielddata, $value, 
  */
 function i18nviews_views_api() {
   return array(
-    'api' => '3.0-alpha1',
+    'api' => '3.0',
     'path' => drupal_get_path('module', 'i18nviews') . '/includes',
   );
-}
-
-/**
- * Return the Views fields that should be translated.
- *
- * @return
- *   Array of field names.
- */
-function _i18nviews_display_fields() {
-  return array('title', 'header', 'footer', 'empty');
 }
 
 /**
@@ -109,19 +115,17 @@ function i18nviews_menu() {
   $items['admin/structure/views/view/%views_ui_cache/translate'] = array(
     'title' => 'Translate',
     'access callback' => 'i18nviews_translate_tab_access',
-    'page callback' => 'i18nviews_translate_tab_page',
-    'page arguments' => array(4),
+    'page callback' => 'i18n_string_object_translate_page',
+    'page arguments' => array('views', 4),
     'type' => MENU_VISIBLE_IN_BREADCRUMB,
     'weight' => 10,
-    'file' => 'i18nviews.pages.inc',
   );
   $items['admin/structure/views/view/%views_ui_cache/translate/%language'] = array(
     'title' => 'Translate',
     'access callback' => 'i18nviews_translate_tab_access',
-    'page callback' => 'i18nviews_translate_tab_page',
-    'page arguments' => array(4, 6),
+    'page callback' => 'i18n_string_object_translate_page',
+    'page arguments' => array('views', 4, 6),
     'type' => MENU_VISIBLE_IN_BREADCRUMB,
-    'file' => 'i18nviews.pages.inc',
   );
 
   return $items;
@@ -151,4 +155,51 @@ function i18nviews_locale_source($translation, $textgroup, $language = NULL) {
   ));
   $select->fields('ls', array('source'));
   return $select->execute()->fetchObject();
+}
+
+/**
+ * Implements hook_i18n_string_info().
+ */
+function i18nviews_i18n_string_info() {
+  $groups['views'] = array(
+    'title' => t('Views'),
+    'description' => t('Views translation.'),
+    'format' => FALSE,
+    'list' => TRUE,
+  );
+  return $groups;
+}
+
+/**
+ * Implements hook_i18n_object_info().
+ */
+function i18nviews_i18n_object_info() {
+  $info['views'] = array(
+    'title' => t('Views'),
+    'class' => 'i18nviews',
+    'string translation' => array(
+      'textgroup' => 'views',
+    ),
+  );
+  return $info;
+}
+
+/**
+ * Implements hook_ctools_plugin_post_alter
+ *
+ * Register Translate operation in ctools export ui.
+ *
+ * @param $plugin
+ *   An associative array defining a plugin.
+ * @param $info
+ *   An associative array of plugin type info.
+ */
+function i18nviews_ctools_plugin_post_alter(&$plugin, &$info) {
+  if ($info['type'] == 'export_ui' && $plugin['module'] == 'views_ui' && i18nviews_localization_plugin_enabled()) {
+    $plugin['allowed operations']['translate']['title'] = t('Translate');
+    $plugin['menu']['items']['translate'] = array(
+      'path' => 'view/%ctools_export_ui/translate',
+      'title' => t('Translate'),
+    );
+  }
 }

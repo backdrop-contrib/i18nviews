@@ -24,8 +24,7 @@ function i18nviews_enable() {
  */
 function i18nviews_disable() {
   // disable i18nstrings as views translation method, switch to core
-  $plugin = variable_get('views_localization_plugin', 'core');
-  if ($plugin=='i18nstrings') {
+  if (i18nviews_localization_plugin_enabled()) {
     variable_set('views_localization_plugin', 'core');
   }
 }

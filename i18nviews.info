@@ -6,6 +6,9 @@ dependencies[] = i18n_taxonomy
 package = Multilingual - Internationalization
 core = 7.x
 
+; i18n translation class
+files[] = i18nviews.inc
+
 ; Handlers, Plugins
 files[] = includes/i18nviews_handler_argument_term_language.inc
 files[] = includes/i18nviews_handler_argument_term_node_tid_depth.inc

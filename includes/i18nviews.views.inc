@@ -158,15 +158,22 @@ function i18nviews_views_data_alter(&$data) {
 }
 
 /**
- * Implementation of hook_field_views_data().
- *
- * modules/taxonomy.views.inc taxonomy_field_views_data()
+ * Implementation of hook_field_views_data_alter().
  */
-function i18nviews_field_views_data(&$result, &$field, $module) {
-  // provide translated variant
-  if ($module=='taxonomy') {
-    // TODO CHECK
-    //dsm(func_get_args());
+function i18nviews_field_views_data_alter(&$data, &$field, $module) {
+  if ($module == 'taxonomy') {
+  }
+  elseif ($module == 'list') {
+    foreach ($data as $table_name => $table_data) {
+      foreach ($table_data as $field_name => $field_data) {
+        if (isset($field_data['filter'])) {
+          $data[$table_name][$field_name . '_i18n'] = $data[$table_name][$field_name];
+          $data[$table_name][$field_name . '_i18n']['real field'] = $field_name;
+          $data[$table_name][$field_name . '_i18n']['title'] .= ' (translated)';
+          $data[$table_name][$field_name . '_i18n']['filter']['handler'] = 'i18nviews_handler_filter_field_list';
+        }
+      }
+    }
   }
 }
 

@@ -18,6 +18,7 @@ files[] = includes/i18nviews_handler_field_taxonomy_term_description.inc
 files[] = includes/i18nviews_handler_field_taxonomy_term_language.inc
 files[] = includes/i18nviews_handler_field_taxonomy_term_name.inc
 files[] = includes/i18nviews_handler_field_term_node_tid.inc
+files[] = includes/i18nviews_handler_filter_field_list.inc
 files[] = includes/i18nviews_handler_filter_taxonomy_index_tid.inc
 files[] = includes/i18nviews_handler_filter_taxonomy_term_name.inc
 files[] = includes/i18nviews_handler_filter_term_language.inc

@@ -4,8 +4,17 @@
  * Implementation of hook_views_data_alter().
  */
 function i18nviews_views_data_alter(&$data) {
-  // Replace taxonomy_term_data handlers.
+  if (module_exists('i18n_taxonomy')) {
+    i18nviews_views_data_alter_i18n_taxonomy(&$data);
+  }
+}
 
+/**
+ * Implementation of hook_views_data_alter().
+ *
+ * Registers views handlers with dependency to i18n_taxonomy.
+ */
+function i18nviews_views_data_alter_i18n_taxonomy(&$data) {
   // TAXONOMY TERM
   // tid field (translated)
   $data['taxonomy_term_data']['tid_i18n'] = array(
@@ -161,9 +170,9 @@ function i18nviews_views_data_alter(&$data) {
  * Implementation of hook_field_views_data_alter().
  */
 function i18nviews_field_views_data_alter(&$data, &$field, $module) {
-  if ($module == 'taxonomy') {
+  if ($module == 'taxonomy' && module_exists('i18n_taxonomy')) {
   }
-  elseif ($module == 'list') {
+  elseif ($module == 'list' && module_exists('i18n_field')) {
     foreach ($data as $table_name => $table_data) {
       foreach ($table_data as $field_name => $field_data) {
         if (isset($field_data['filter'])) {
@@ -192,7 +201,10 @@ function i18nviews_views_plugins() {
         'path' => $path,
       ),
     ),
-    'argument validator' => array(
+  );
+
+  if (module_exists('i18n_taxonomy')) {
+    $ret['argument validator'] = array(
       'i18n_taxonomy_term' => array(
         'title' => t('Taxonomy term (i18n)'),
         'help' => t("Use the locale to interpret arguments."),
@@ -200,8 +212,9 @@ function i18nviews_views_plugins() {
         'path' => $path,
         'parent' => 'taxonomy_term',
       ),
-    ),
-  );
+    );
+  }
+
   return $ret;
 }
 

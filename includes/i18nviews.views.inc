@@ -5,7 +5,7 @@
  */
 function i18nviews_views_data_alter(&$data) {
   if (module_exists('i18n_taxonomy')) {
-    i18nviews_views_data_alter_i18n_taxonomy(&$data);
+    i18nviews_views_data_alter_i18n_taxonomy($data);
   }
 }
 

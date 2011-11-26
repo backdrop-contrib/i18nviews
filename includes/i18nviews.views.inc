@@ -171,6 +171,16 @@ function i18nviews_views_data_alter_i18n_taxonomy(&$data) {
  */
 function i18nviews_field_views_data_alter(&$data, &$field, $module) {
   if ($module == 'taxonomy' && module_exists('i18n_taxonomy')) {
+    foreach ($data as $table_name => $table_data) {
+      foreach ($table_data as $field_name => $field_data) {
+        if (isset($field_data['filter'])) {
+          $data[$table_name][$field_name . '_i18n'] = $data[$table_name][$field_name];
+          $data[$table_name][$field_name . '_i18n']['real field'] = $field_name;
+          $data[$table_name][$field_name . '_i18n']['title'] .= ' (translated)';
+          $data[$table_name][$field_name . '_i18n']['filter']['handler'] = 'i18nviews_handler_filter_taxonomy_index_tid';
+        }
+      }
+    }
   }
   elseif ($module == 'list' && module_exists('i18n_field')) {
     foreach ($data as $table_name => $table_data) {

@@ -28,7 +28,7 @@ function i18nviews_views_data_alter_i18n_taxonomy(&$data) {
     'filter' => array(
       'title' => t('Term (translated)'),
       'help' => t('Taxonomy term chosen from autocomplete or select widget.'),
-      'handler' => 'i18nviews_handler_filter_term_node_tid',
+      'handler' => 'i18nviews_handler_filter_taxonomy_index_tid',
       'hierarchy table' => 'taxonomy_term_hierarchy',
       'numeric' => TRUE,
     ),
@@ -145,7 +145,6 @@ function i18nviews_views_data_alter_i18n_taxonomy(&$data) {
     ),
     'filter' => array(
       'title' => t('Has taxonomy term (translated)'),
-      //'handler' => 'views_handler_filter_term_node_tid',
       'handler' => 'i18nviews_handler_filter_taxonomy_index_tid',
       'hierarchy table' => 'taxonomy_term_hierarchy',
       'numeric' => TRUE,

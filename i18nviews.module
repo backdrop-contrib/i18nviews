@@ -83,11 +83,12 @@ function i18nviews_menu() {
     'type' => MENU_VISIBLE_IN_BREADCRUMB,
     'weight' => 10,
   );
-  $items['admin/structure/views/view/%views_ui_cache/translate/%language'] = array(
+  $items['admin/structure/views/view/%views_ui_cache/translate/%'] = array(
     'title' => 'Translate',
     'access callback' => 'i18nviews_translate_tab_access',
-    'page callback' => 'i18n_string_object_translate_page',
-    'page arguments' => array('views', 4, 6),
+    'page callback' => 'i18nviews_object_translate_page',
+    'page arguments' => array(4, 6),
+    'file' => 'i18nviews.pages.inc',
     'type' => MENU_VISIBLE_IN_BREADCRUMB,
   );
 

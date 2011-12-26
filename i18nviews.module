@@ -31,43 +31,6 @@ function i18nviews_localization_plugin_enabled() {
 }
 
 /**
- * Implements hook_i18n_string_list().
- */
-function i18nviews_i18n_string_list($group) {
-  $strings = array();
-  if ($group == 'views') {
-    $views = views_get_all_views();
-    foreach ($views as $view) {
-      $strings[$view->name] = i18nviews_views_properties($view);
-    }
-    return array($group => $strings);
-  }
-}
-
-/**
- * Get all translatable properties from a view.
- *
- * @param $view
- *  An view object.
- */
-function i18nviews_views_properties($view) {
-  $properties = array();
-  $view->init_display();
-  foreach ($view->display as $display_id => $display) {
-    $translatables = array();
-    $display->handler->unpack_translatables($translatables);
-    foreach ($translatables as $translatable) {
-      $key = implode(':', $translatable['keys']);
-      $properties[$display_id][$key] = array(
-        'title' => $display_id . ' ' . $key,
-        'string' => $translatable['value'],
-      );
-    }
-  }
-  return $properties;
-}
-
-/**
  * Field handler for taxonomy term fields.
  *
  * Remake of views_handler_field_allterms with term name translation.
@@ -155,33 +118,6 @@ function i18nviews_locale_source($translation, $textgroup, $language = NULL) {
   ));
   $select->fields('ls', array('source'));
   return $select->execute()->fetchObject();
-}
-
-/**
- * Implements hook_i18n_string_info().
- */
-function i18nviews_i18n_string_info() {
-  $groups['views'] = array(
-    'title' => t('Views'),
-    'description' => t('Views translation.'),
-    'format' => FALSE,
-    'list' => TRUE,
-  );
-  return $groups;
-}
-
-/**
- * Implements hook_i18n_object_info().
- */
-function i18nviews_i18n_object_info() {
-  $info['views'] = array(
-    'title' => t('Views'),
-    'class' => 'i18nviews',
-    'string translation' => array(
-      'textgroup' => 'views',
-    ),
-  );
-  return $info;
 }
 
 /**

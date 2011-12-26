@@ -5,16 +5,29 @@ class i18nviews extends i18n_string_object_wrapper {
    * Get string context
    */
   public function get_string_context() {
-    return array($this->object->name, '*');
+    return array('views', $this->object->name);
   }
 
   /**
    * Get translatable properties
    */
   protected function build_properties() {
-    $properties = parent::build_properties();
-    $properties[$this->get_textgroup()][$this->object->name] = i18nviews_views_properties($this->object);
-    return $properties;
+    $strings = parent::build_properties();
+    $properties = array();
+    $this->object->init_display();
+    foreach ($this->object->display as $display_id => $display) {
+      $translatables = array();
+      $display->handler->unpack_translatables($translatables);
+      foreach ($translatables as $translatable) {
+        $key = implode(':', $translatable['keys']);
+        $properties[$display_id][$key] = array(
+          'title' => $display_id . ' ' . $key,
+          'string' => $translatable['value'],
+        );
+      }
+    }
+    $strings[$this->get_textgroup()][$this->object->name] = $properties;
+    return $strings;
   }
 
   /**

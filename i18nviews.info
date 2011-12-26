@@ -7,6 +7,8 @@ core = 7.x
 
 ; i18n translation class
 files[] = i18nviews.inc
+; i18n hooks
+files[] = i18nviews.i18n.inc
 
 ; Handlers, Plugins
 files[] = includes/i18nviews_handler_argument_taxonomy_index_tid.inc

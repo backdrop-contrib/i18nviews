@@ -54,5 +54,6 @@ function i18nviews_translate_page_form($form, &$form_state, $view, $strings, $la
     $form['groups'][$display_id]['strings'] = i18n_string_translate_page_form_strings($display_strings, $langcode);
   }
   $form['submit']['#weight'] = 1;
+  $form['#submit'][] = 'views_invalidate_cache';
   return $form;
 }

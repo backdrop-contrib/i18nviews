@@ -169,7 +169,7 @@ function i18nviews_views_data_alter_i18n_taxonomy(&$data) {
  * Implementation of hook_field_views_data_alter().
  */
 function i18nviews_field_views_data_alter(&$data, &$field, $module) {
-  if ($module == 'i18n_taxonomy' && module_exists('i18n_taxonomy')) {
+  if ($module == 'taxonomy' && module_exists('i18n_taxonomy')) {
     foreach ($data as $table_name => $table_data) {
       foreach ($table_data as $field_name => $field_data) {
         if (isset($field_data['filter'])) {

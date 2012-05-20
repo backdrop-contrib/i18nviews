@@ -19,7 +19,7 @@ class i18nviews_handler_field_taxonomy_term_description extends views_handler_fi
     }
 
     $terms = taxonomy_term_load_multiple($tids);
-    i18n_taxonomy_localize_terms($terms, array('description'));
+    $terms = i18n_taxonomy_localize_terms($terms);
     foreach ($values as $key => $value) {
       if (isset($value->{$this->field_alias})) {
         $tid = $this->get_value($value, 'tid');

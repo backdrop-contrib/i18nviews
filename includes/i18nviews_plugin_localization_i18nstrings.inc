@@ -24,9 +24,7 @@ class i18nviews_plugin_localization_i18nstrings extends views_plugin_localizatio
    */
   function translate_string($string, $keys = array(), $format = '') {
     $options = array();
-    if (!empty($format)) {
-      $options['format'] = $format;
-    }
+    $options['format'] = $format ? $format : I18N_STRING_FILTER_XSS_ADMIN;
     return i18n_string($this->stringid($keys), $string, $options);
   }
 
@@ -43,9 +41,7 @@ class i18nviews_plugin_localization_i18nstrings extends views_plugin_localizatio
    */
   function save_string($string, $keys = array(), $format = '') {
     $options = array();
-    if (!empty($source['format'])) {
-      $options['format'] = $format;
-    }
+    $options['format'] = $format ? $format : I18N_STRING_FILTER_XSS_ADMIN;
     i18n_string_update($this->stringid($keys), $string, $options);
   }
 

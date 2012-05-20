@@ -59,7 +59,7 @@ class i18nviews_plugin_localization_i18nstrings extends views_plugin_localizatio
     i18n_string_remove($this->stringid($source['keys']), $source['value']);
     return TRUE;
   }
-  
+
   /**
    * Get string id for i18n
    *
@@ -70,4 +70,3 @@ class i18nviews_plugin_localization_i18nstrings extends views_plugin_localizatio
     return 'views:' . implode(':', $keys);
   }
 }
-

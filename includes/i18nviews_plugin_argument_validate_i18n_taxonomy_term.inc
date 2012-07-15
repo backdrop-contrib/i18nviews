@@ -153,6 +153,8 @@ class i18nviews_plugin_argument_validate_i18n_taxonomy_term extends views_plugin
 
      // if unverified tids left - verify them and cache results
      if (count($test)) {
+       $vocabularies = taxonomy_get_vocabularies();
+
        $query = db_select('taxonomy_term_data', 'td');
        $query->leftJoin('taxonomy_vocabulary', 'tv', 'td.vid = tv.vid');
        $query->fields('td');

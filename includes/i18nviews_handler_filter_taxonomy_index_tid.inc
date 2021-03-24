@@ -6,7 +6,7 @@
 class i18nviews_handler_filter_taxonomy_index_tid extends views_handler_filter_term_node_tid {
 
   function value_form(&$form, &$form_state) {
-    $vocabulary = taxonomy_vocabulary_machine_name_load($this->options['vocabulary']);
+    $vocabulary = taxonomy_vocabulary_load($this->options['vocabulary']);
     if (empty($vocabulary) && $this->options['limit']) {
       $form['markup'] = array(
         '#prefix' => '<div class="form-item">',
@@ -35,13 +35,13 @@ class i18nviews_handler_filter_taxonomy_index_tid extends views_handler_filter_t
       );
 
       if ($this->options['limit']) {
-        $form['value']['#autocomplete_path'] = 'i18n/taxonomy/autocomplete/language/' . $vocabulary->vid;
+        $form['value']['#autocomplete_path'] = 'i18n/taxonomy/autocomplete/language/' . $vocabulary->machine_name;
       }
     }
     else {
       if (!empty($this->options['hierarchy']) && $this->options['limit']) {
         global $language;
-        $tree = taxonomy_get_tree($vocabulary->vid);
+        $tree = taxonomy_get_tree($vocabulary->machine_name);
         $options = array();
 
         if ($tree) {
@@ -55,15 +55,13 @@ class i18nviews_handler_filter_taxonomy_index_tid extends views_handler_filter_t
       else {
         $options = array();
         $query = db_select('taxonomy_term_data', 'td');
-        $query->innerJoin('taxonomy_vocabulary', 'tv', 'td.vid = tv.vid');
         $query->fields('td');
-        $query->orderby('tv.weight');
-        $query->orderby('tv.name');
+        $query->orderby('td.vocabulary');
         $query->orderby('td.weight');
         $query->orderby('td.name');
         $query->addTag('term_access');
         if ($this->options['limit']) {
-          $query->condition('tv.machine_name', $vocabulary->machine_name);
+          $query->condition('td.vocabulary', $vocabulary->machine_name);
         }
         $result = $query->execute();
         foreach ($result as $term) {
@@ -143,10 +141,9 @@ class i18nviews_handler_filter_taxonomy_index_tid extends views_handler_filter_t
     }
 
     $query = db_select('taxonomy_term_data', 'td');
-    $query->innerJoin('taxonomy_vocabulary', 'tv', 'td.vid = tv.vid');
     $query->fields('td');
     $query->condition('td.name', $names);
-    $query->condition('tv.machine_name', $this->options['vocabulary']);
+    $query->condition('td.vocabulary', $this->options['vocabulary']);
     $query->addTag('term_access');
     $result = $query->execute();
     foreach ($result as $term) {

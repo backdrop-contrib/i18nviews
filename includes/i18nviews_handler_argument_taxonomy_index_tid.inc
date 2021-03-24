@@ -7,7 +7,7 @@ class i18nviews_handler_argument_taxonomy_index_tid extends views_handler_argume
   function title_query() {
     $titles = array();
     $result = db_select('taxonomy_term_data', 'td')
-      ->fields('td', array('name', 'tid', 'vid'))
+      ->fields('td', array('name', 'tid', 'vocabulary'))
       ->condition('td.tid', $this->value)
       ->execute();
     foreach ($result as $term) {

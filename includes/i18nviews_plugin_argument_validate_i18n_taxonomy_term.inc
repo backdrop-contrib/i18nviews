@@ -17,8 +17,8 @@ class i18nviews_plugin_argument_validate_i18n_taxonomy_term extends views_plugin
   }
 
   function convert_options(&$options) {
-    if (!isset($options['vids']) && !empty($this->argument->options['validate_argument_vocabulary_i18n'])) {
-      $options['vids'] = $this->argument->options['validate_argument_vocabulary_i18n'];
+    if (!isset($options['vocabularies']) && !empty($this->argument->options['validate_argument_vocabulary_i18n'])) {
+      $options['vocabularies'] = $this->argument->options['validate_argument_vocabulary_i18n'];
       $options['type'] = $this->argument->options['validate_argument_type_i18n'];
       $options['transform'] = $this->argument->options['validate_argument_transform_i18n'];
     }
@@ -30,7 +30,7 @@ class i18nviews_plugin_argument_validate_i18n_taxonomy_term extends views_plugin
     $options = array();
     // Get the localized vocabularies.
     foreach (taxonomy_get_vocabularies() as $vocab) {
-      if (i18n_taxonomy_vocabulary_mode($vocab->vid, I18N_MODE_LOCALIZE)) {
+      if (i18n_taxonomy_vocabulary_mode($vocab->machine_name, I18N_MODE_LOCALIZE)) {
         $options[$vocab->machine_name] = check_plain($vocab->name);
       }
     }
@@ -69,11 +69,9 @@ class i18nviews_plugin_argument_validate_i18n_taxonomy_term extends views_plugin
         }
 
         $query = db_select('taxonomy_term_data', 'td');
-        $query->leftJoin('taxonomy_vocabulary', 'tv', 'td.vid = tv.vid');
         $query->fields('td');
-        $query->fields('tv', array('machine_name'));
         if (!empty($vocabularies)) {
-          $query->condition('tv.machine_name', $vocabularies);
+          $query->condition('td.vocabulary', $vocabularies);
         }
         if ($transform) {
           $query->where("replace(td.name, ' ', '-') = :name", array(':name' => $argument));
@@ -104,9 +102,7 @@ class i18nviews_plugin_argument_validate_i18n_taxonomy_term extends views_plugin
     }
 
     $query = db_select('taxonomy_term_data', 'td');
-    $query->leftJoin('taxonomy_vocabulary', 'tv', 'td.vid = tv.vid');
     $query->fields('td');
-    $query->fields('tv', array('machine_name'));
     $query->condition('td.tid', $argument);
     $query->addTag('term_access');
     $term = $query->execute()->fetchObject();
@@ -154,9 +150,7 @@ class i18nviews_plugin_argument_validate_i18n_taxonomy_term extends views_plugin
     // if unverified tids left - verify them and cache results
     if (count($test)) {
       $query = db_select('taxonomy_term_data', 'td');
-      $query->leftJoin('taxonomy_vocabulary', 'tv', 'td.vid = tv.vid');
       $query->fields('td');
-      $query->fields('tv', array('machine_name'));
       $query->condition('td.tid', $test);
 
       $result = $query->execute();

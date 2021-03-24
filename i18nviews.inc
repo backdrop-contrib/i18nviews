@@ -17,7 +17,7 @@ class i18nviews extends i18n_string_object_wrapper {
     $this->object->init_display();
     foreach ($this->object->display as $display_id => $display) {
       $translatables = array();
-      if(is_object($display->handler)) {
+      if (is_object($display->handler)) {
         $display->handler->unpack_translatables($translatables);
       }
       foreach ($translatables as $translatable) {
@@ -36,13 +36,13 @@ class i18nviews extends i18n_string_object_wrapper {
    * Get edit path for oject.
    */
   public function get_edit_path() {
-    return 'admin/structure/views/view/' . $this->object->name .'/edit';
+    return 'admin/structure/views/view/' . $this->object->name . '/edit';
   }
 
   /**
    * Get translate path for object
    */
   public function get_translate_path($langcode = NULL) {
-    return 'admin/structure/views/view/' . $this->object->name .'/translate' . ($langcode ? '/' . $langcode : '');
+    return 'admin/structure/views/view/' . $this->object->name . '/translate' . ($langcode ? '/' . $langcode : '');
   }
 }

@@ -5,8 +5,8 @@
  */
 
 // This needs i18n_string page library and some views admin functions
-require_once drupal_get_path('module', 'i18n_string') . '/i18n_string.pages.inc';
-require_once drupal_get_path('module', 'views') . '/includes/admin.inc';
+require_once backdrop_get_path('module', 'i18n_string') . '/i18n_string.pages.inc';
+require_once backdrop_get_path('module', 'views') . '/includes/admin.inc';
 
 /**
  * Provide a better organized views translation page grouping strings by display.
@@ -23,9 +23,9 @@ function i18nviews_object_translate_page($view, $langcode) {
   $object = i18n_object('views', $view);
   $strings = $object->get_strings(array('empty' => TRUE));
 
-  drupal_set_title(t('Translate to @language', array('@language' => i18n_language_name($langcode))));
+  backdrop_set_title(t('Translate to @language', array('@language' => i18n_language_name($langcode))));
   // For each string object, objectid = display
-  return drupal_get_form('i18nviews_translate_page_form', $view, $strings, $langcode);
+  return backdrop_get_form('i18nviews_translate_page_form', $view, $strings, $langcode);
 }
 
 /**

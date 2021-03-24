@@ -11,13 +11,13 @@
  */
 
 /**
- * Implementation of hook_help().
+ * Implements hook_help().
  */
 function i18nviews_help($path, $arg) {
   switch ($path) {
-    case 'admin/modules#description' :
-      $output = '<p>'. t('Supports translation for views strings: title, header, footer...') .'</p>';
-      $output .= '<p>'. t('To search and translate strings, use the <a href="@translate-interface">translation interface</a> pages.', array('@translate-interface' => url('admin/build/translate'))) .'</p>';
+    case 'admin/modules#description':
+      $output = '<p>' . t('Supports translation for views strings: title, header, footer...') . '</p>';
+      $output .= '<p>' . t('To search and translate strings, use the <a href="@translate-interface">translation interface</a> pages.', array('@translate-interface' => url('admin/build/translate'))) . '</p>';
       return $output;
   }
 }
@@ -27,6 +27,7 @@ function i18nviews_help($path, $arg) {
  * Returns true if i18nstrings is used as views localization plugin.
  */
 function i18nviews_localization_plugin_enabled() {
+  // TODO This variable was probably removed in Backdrop without replacement.
   return variable_get('views_localization_plugin', 'core') == 'i18nstrings';
 }
 
@@ -62,12 +63,12 @@ function i18nviews_views_handler_field_allterms($fieldinfo, $fielddata, $value, 
 }
 
 /**
- * Implementation of hook_views_api().
+ * Implements hook_views_api().
  */
 function i18nviews_views_api() {
   return array(
     'api' => '3.0',
-    'path' => drupal_get_path('module', 'i18nviews') . '/includes',
+    'path' => backdrop_get_path('module', 'i18nviews') . '/includes',
   );
 }
 
@@ -113,16 +114,16 @@ function i18nviews_locale_source($translation, $textgroup, $language = NULL) {
   }
   $select = db_select('locales_source', 'ls');
   $select->innerJoin('locales_target', 'lt', '(ls.lid = lt.lid AND lt.translation = :translation AND lt.language = :language AND ls.textgroup = :textgroup )', array(
-      ':translation' => $translation,
-      ':language' => $language,
-      ':textgroup' => $textgroup,
+    ':translation' => $translation,
+    ':language' => $language,
+    ':textgroup' => $textgroup,
   ));
   $select->fields('ls', array('source'));
   return $select->execute()->fetchObject();
 }
 
 /**
- * Implements hook_ctools_plugin_post_alter
+ * Implements hook_ctools_plugin_post_alter().
  *
  * Register Translate operation in ctools export ui.
  *
@@ -139,4 +140,31 @@ function i18nviews_ctools_plugin_post_alter(&$plugin, &$info) {
       'title' => t('Translate'),
     );
   }
+}
+
+/**
+ * Implements hook_autoload_info().
+ */
+function i18nviews_autoload_info() {
+  return array(
+    'i18nviews' => 'i18nviews.inc',
+    'i18nviews_handler_argument_node_type' => 'includes/i18nviews_handler_argument_node_type.inc',
+    'i18nviews_handler_argument_taxonomy_index_tid' => 'includes/i18nviews_handler_argument_taxonomy_index_tid.inc',
+    'i18nviews_handler_argument_taxonomy_term_language' => 'includes/i18nviews_handler_argument_taxonomy_term_language.inc',
+    'i18nviews_handler_argument_taxonomy_term_name' => 'includes/i18nviews_handler_argument_taxonomy_term_name.inc',
+    'i18nviews_handler_argument_term_node_tid_depth' => 'includes/i18nviews_handler_argument_term_node_tid_depth.inc',
+    'i18nviews_handler_field_node_type' => 'includes/i18nviews_handler_field_node_type.inc',
+    'i18nviews_handler_field_taxonomy_term_description' => 'includes/i18nviews_handler_field_taxonomy_term_description.inc',
+    'i18nviews_handler_field_taxonomy_term_language' => 'includes/i18nviews_handler_field_taxonomy_term_language.inc',
+    'i18nviews_handler_field_taxonomy_term_name' => 'includes/i18nviews_handler_field_taxonomy_term_name.inc',
+    'i18nviews_handler_field_term_node_tid' => 'includes/i18nviews_handler_field_term_node_tid.inc',
+    'i18nviews_handler_filter_field_list' => 'includes/i18nviews_handler_filter_field_list.inc',
+    'i18nviews_handler_filter_node_type' => 'includes/i18nviews_handler_filter_node_type.inc',
+    'i18nviews_handler_filter_taxonomy_index_tid' => 'includes/i18nviews_handler_filter_taxonomy_index_tid.inc',
+    'i18nviews_handler_filter_taxonomy_term_language' => 'includes/i18nviews_handler_filter_taxonomy_term_language.inc',
+    'i18nviews_handler_filter_taxonomy_term_name' => 'includes/i18nviews_handler_filter_taxonomy_term_name.inc',
+    'i18nviews_handler_filter_term_node_tid_depth' => 'includes/i18nviews_handler_filter_term_node_tid_depth.inc',
+    'i18nviews_plugin_argument_validate_i18n_taxonomy_term' => 'includes/i18nviews_plugin_argument_validate_i18n_taxonomy_term.inc',
+    'i18nviews_plugin_localization_i18nstrings' => 'includes/i18nviews_plugin_localization_i18nstrings.inc',
+  );
 }

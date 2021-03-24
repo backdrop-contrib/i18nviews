@@ -121,62 +121,62 @@ class i18nviews_plugin_argument_validate_i18n_taxonomy_term extends views_plugin
   /**
    * Validate taxonomy term - case i18n_tids
    */
-   function validate_argument_i18n_tids($argument, $vocabularies) {
-     // An empty argument is not a term so doesn't pass.
-     if (empty($argument)) {
-       return FALSE;
-     }
+  function validate_argument_i18n_tids($argument, $vocabularies) {
+    // An empty argument is not a term so doesn't pass.
+    if (empty($argument)) {
+      return FALSE;
+    }
 
-     $tids = new stdClass();
-     $tids->value = $argument;
-     $tids = views_break_phrase($argument, $tids);
-     if ($tids->value == array(-1)) {
-       return FALSE;
-     }
+    $tids = new stdClass();
+    $tids->value = $argument;
+    $tids = views_break_phrase($argument, $tids);
+    if ($tids->value == array(-1)) {
+      return FALSE;
+    }
 
-     $test = drupal_map_assoc($tids->value);
-     $titles = array();
+    $test = backdrop_map_assoc($tids->value);
+    $titles = array();
 
-     // check, if some tids already verified
-     static $validated_cache = array();
-     foreach ($test as $tid) {
-       if (isset($validated_cache[$tid])) {
-         if ($validated_cache[$tid] === FALSE) {
-           return FALSE;
-         }
-         else {
-           $titles[] = $validated_cache[$tid];
-           unset($test[$tid]);
-         }
-       }
-     }
+    // check, if some tids already verified
+    static $validated_cache = array();
+    foreach ($test as $tid) {
+      if (isset($validated_cache[$tid])) {
+        if ($validated_cache[$tid] === FALSE) {
+          return FALSE;
+        }
+        else {
+          $titles[] = $validated_cache[$tid];
+          unset($test[$tid]);
+        }
+      }
+    }
 
-     // if unverified tids left - verify them and cache results
-     if (count($test)) {
-       $query = db_select('taxonomy_term_data', 'td');
-       $query->leftJoin('taxonomy_vocabulary', 'tv', 'td.vid = tv.vid');
-       $query->fields('td');
-       $query->fields('tv', array('machine_name'));
-       $query->condition('td.tid', $test);
+    // if unverified tids left - verify them and cache results
+    if (count($test)) {
+      $query = db_select('taxonomy_term_data', 'td');
+      $query->leftJoin('taxonomy_vocabulary', 'tv', 'td.vid = tv.vid');
+      $query->fields('td');
+      $query->fields('tv', array('machine_name'));
+      $query->condition('td.tid', $test);
 
-       $result = $query->execute();
+      $result = $query->execute();
 
-       foreach ($result as $term) {
-         if ($vocabularies && empty($vocabularies[$term->machine_name])) {
-           $validated_cache[$term->tid] = FALSE;
-           return FALSE;
-         }
+      foreach ($result as $term) {
+        if ($vocabularies && empty($vocabularies[$term->machine_name])) {
+          $validated_cache[$term->tid] = FALSE;
+          return FALSE;
+        }
 
-         $titles[] = $validated_cache[$term->tid] = check_plain(i18n_taxonomy_term_name($term));
-         unset($test[$term->tid]);
-       }
-     }
+        $titles[] = $validated_cache[$term->tid] = check_plain(i18n_taxonomy_term_name($term));
+        unset($test[$term->tid]);
+      }
+    }
 
-     // Remove duplicate titles
-     $titles = array_unique($titles);
+    // Remove duplicate titles
+    $titles = array_unique($titles);
 
-     $this->argument->validated_title = implode($tids->operator == 'or' ? ' + ' : ', ', $titles);
-     // If this is not empty, we did not find a tid.
-     return empty($test);
-   }
+    $this->argument->validated_title = implode($tids->operator == 'or' ? ' + ' : ', ', $titles);
+    // If this is not empty, we did not find a tid.
+    return empty($test);
+  }
 }

@@ -1,7 +1,7 @@
 <?php
 
 /**
- * Implementation of hook_views_data_alter().
+ * Implements hook_views_data_alter().
  */
 function i18nviews_views_data_alter(&$data) {
   if (module_exists('i18n_taxonomy')) {
@@ -34,7 +34,7 @@ function i18nviews_views_data_alter(&$data) {
 }
 
 /**
- * Implementation of hook_views_data_alter().
+ * Implements hook_views_data_alter().
  *
  * Registers views handlers with dependency to i18n_taxonomy.
  */
@@ -70,11 +70,11 @@ function i18nviews_views_data_alter_i18n_taxonomy(&$data) {
     ),
     // TODO currently almost impossible, JOIN to i18n_string table needed
     /*
-    'sort' => array(
-      //'handler' => 'views_handler_sort',
-      'handler' => 'i18nviews_handler_sort_taxonomy_term_name',
-    ),
-    */
+ 'sort' => array(
+ //'handler' => 'views_handler_sort',
+ 'handler' => 'i18nviews_handler_sort_taxonomy_term_name',
+ ),
+ */
     'filter' => array(
       //'handler => 'views_handler_filter_string',
       'handler' => 'i18nviews_handler_filter_taxonomy_term_name',
@@ -179,18 +179,18 @@ function i18nviews_views_data_alter_i18n_taxonomy(&$data) {
 
   // TODO CHECK this is missing in 7.x-3.x
   /*
-  //$data['term_index']['tid']['field']['handler'] = 'i18nviews_handler_field_term_index_tid';
-  // original views_handler_argument_term_node_tid
-  $data['term_index']['tid']['argument']['handler'] = 'i18nviews_handler_argument_term_index_tid';
-  // original views_handler_filter_term_node_tid
-  $data['term_index']['tid']['filter']['handler'] = 'i18nviews_handler_filter_term_index_tid';
-  // TODO CHECK this is missing in 7.x-3.x
-  //$data['node']['term_index_tid_depth']['argument']['handler'] = 'i18nviews_handler_argument_term_index_tid_depth';
-  */
+   //$data['term_index']['tid']['field']['handler'] = 'i18nviews_handler_field_term_index_tid';
+   // original views_handler_argument_term_node_tid
+   $data['term_index']['tid']['argument']['handler'] = 'i18nviews_handler_argument_term_index_tid';
+   // original views_handler_filter_term_node_tid
+   $data['term_index']['tid']['filter']['handler'] = 'i18nviews_handler_filter_term_index_tid';
+   // TODO CHECK this is missing in 7.x-3.x
+   //$data['node']['term_index_tid_depth']['argument']['handler'] = 'i18nviews_handler_argument_term_index_tid_depth';
+   */
 }
 
 /**
- * Implementation of hook_field_views_data_alter().
+ * Implements hook_field_views_data_alter().
  */
 function i18nviews_field_views_data_alter(&$data, &$field, $module) {
   if ($module == 'taxonomy' && module_exists('i18n_taxonomy')) {
@@ -220,10 +220,10 @@ function i18nviews_field_views_data_alter(&$data, &$field, $module) {
 }
 
 /**
- * Implementation of hook_views_plugins().
+ * Implements hook_views_plugins().
  */
 function i18nviews_views_plugins() {
-  $path = drupal_get_path('module', 'i18nviews') . '/includes';
+  $path = backdrop_get_path('module', 'i18nviews') . '/includes';
   $ret = array(
     'module' => 'i18nviews',
     'localization' => array(
@@ -259,6 +259,6 @@ function i18nviews_views_plugins() {
 function i18nviews_views_ui_display_top_links_alter(&$links, $view, $display_id) {
   $links['translate'] = array(
     'title' => t('translate view'),
-    'href' => "admin/structure/views/view/$view->name/translate"
+    'href' => "admin/structure/views/view/$view->name/translate",
   );
 }

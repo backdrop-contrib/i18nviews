@@ -167,7 +167,7 @@ class i18nviews_handler_filter_taxonomy_index_tid extends views_handler_filter_t
 
 
   function admin_summary() {
-// set up $this->value_options for the parent summary
+    // set up $this->value_options for the parent summary
     $this->value_options = array();
 
     if ($this->value) {

@@ -16,6 +16,7 @@
  */
 function i18nviews_enable() {
   // enable i18nstrings as views translation method
+  // TODO This variable was probably removed in Backdrop without replacement.
   variable_set('views_localization_plugin', 'i18nstrings');
 }
 
@@ -25,6 +26,7 @@ function i18nviews_enable() {
 function i18nviews_disable() {
   // disable i18nstrings as views translation method, switch to core
   if (i18nviews_localization_plugin_enabled()) {
+    // TODO This variable was probably removed in Backdrop without replacement.
     variable_set('views_localization_plugin', 'core');
   }
 }

@@ -32,7 +32,7 @@ class i18nviews_handler_field_term_node_tid extends views_handler_field_term_nod
       $result = $query->execute();
 
       foreach ($result as $term) {
-        $name = i18n_string('taxonomy:term:'. $term->tid .':name', $term->name);
+        $name = i18n_string('taxonomy:term:' . $term->tid . ':name', $term->name);
         $this->items[$term->node_nid][$term->tid]['name'] = check_plain($name);
         $this->items[$term->node_nid][$term->tid]['tid'] = $term->tid;
         $this->items[$term->node_nid][$term->tid]['vocabulary_machine_name'] = check_plain($term->vocabulary_machine_name);

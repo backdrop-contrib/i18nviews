@@ -43,7 +43,7 @@ class i18nviews_handler_filter_term_node_tid_depth extends i18nviews_handler_fil
       $operator = '=';
     }
     else {
-      $operator = 'IN';# " IN (" . implode(', ', array_fill(0, sizeof($this->value), '%d')) . ")";
+      $operator = 'IN'; # " IN (" . implode(', ', array_fill(0, sizeof($this->value), '%d')) . ")";
     }
 
     // The normal use of ensure_my_table() here breaks Views.

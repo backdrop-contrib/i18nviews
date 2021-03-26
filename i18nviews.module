@@ -14,8 +14,8 @@
  * Returns true if i18nstrings is used as views localization plugin.
  */
 function i18nviews_localization_plugin_enabled() {
-  // TODO This variable was probably removed in Backdrop without replacement.
-  return variable_get('views_localization_plugin', 'core') == 'i18nstrings';
+  $plugin = config_get('views.settings', 'views_localization_plugin');
+  return $plugin;
 }
 
 /**

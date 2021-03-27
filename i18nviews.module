@@ -11,14 +11,6 @@
  */
 
 /**
- * Returns true if i18nstrings is used as views localization plugin.
- */
-function i18nviews_localization_plugin_enabled() {
-  $plugin = config_get('views.settings', 'views_localization_plugin');
-  return $plugin;
-}
-
-/**
  * Field handler for taxonomy term fields.
  *
  * Remake of views_handler_field_allterms with term name translation.
@@ -107,26 +99,6 @@ function i18nviews_locale_source($translation, $textgroup, $language = NULL) {
   ));
   $select->fields('ls', array('source'));
   return $select->execute()->fetchObject();
-}
-
-/**
- * Implements hook_ctools_plugin_post_alter().
- *
- * Register Translate operation in ctools export ui.
- *
- * @param $plugin
- *   An associative array defining a plugin.
- * @param $info
- *   An associative array of plugin type info.
- */
-function i18nviews_ctools_plugin_post_alter(&$plugin, &$info) {
-  if ($info['type'] == 'export_ui' && $plugin['module'] == 'views_ui' && i18nviews_localization_plugin_enabled()) {
-    $plugin['allowed operations']['translate']['title'] = t('Translate');
-    $plugin['menu']['items']['translate'] = array(
-      'path' => 'view/%ctools_export_ui/translate',
-      'title' => t('Translate'),
-    );
-  }
 }
 
 /**
